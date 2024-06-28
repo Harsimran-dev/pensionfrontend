@@ -1,0 +1,78 @@
+<div *ngIf="companyType === 1">
+    <div class="card custom-card" >
+      <div class="card-body">
+          <h4 class="card-title">Investments</h4>
+          <h5 class="card-subtitle text-muted">Track Your Investments</h5>
+          <div class="table-responsive mt-4">
+              <table class="table table-bordered table-hover">
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Symbol</th>
+                          <th>Purchase Date</th>
+                          <th>Purchase Price</th>
+                          <th>Current Price</th>
+                          <th>Investment Result</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let investment of investments">
+                          <td>{{ investment.name }}</td>
+                          <td>{{ investment.symbol }}</td>
+                          <td>{{ investment.purchaseDate | date:'medium' }}</td>
+                          <td>{{ investment.purchasePrice }}</td>
+                          <td>{{ investment.currentPrice }}</td>
+                          <td>
+                              <ng-container *ngIf="investment.investmentStatus === 'PROFIT'; else lossOrNoLoss">
+                                  <img src="assets/emoji.png" alt="Happy Emoji" style="width: 24px; height: 24px;">{{investment.investmentStatus }}
+                              </ng-container>
+                              <ng-template #lossOrNoLoss>
+                                  <ng-container *ngIf="investment.investmentStatus === 'LOSS'; else noProfitNoLoss">
+                                      <img src="assets/confused.png" alt="Sad Emoji" style="width: 24px; height: 24px;">{{ investment.investmentStatus }}
+                                  </ng-container>
+                                  <ng-template #noProfitNoLoss>
+                                      <span>No Profit No Loss</span>
+                                  </ng-template>
+                              </ng-template>
+                          </td>
+                          <td>
+                              <button class="btn btn-sm btn-secondary" (click)="toggleCollapse(investment.id, investment.symbol, investment.investmentType)">Refresh</button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+  </div>
+  <div *ngIf="companyType === 2">
+    <div class="card custom-card">
+        <div class="card-body">
+            <h4 class="card-title">Defined Benefit Pension Schemes</h4>
+            <h5 class="card-subtitle text-muted">Track Your Pension Schemes</h5>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Final Salary</th>
+                            <th>Years of Service</th>
+                            <th>Accrual Rate</th>
+                            <th>Net Pension Salary</th>
+                            <th>Retirement Goal Age</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ definedbenifit.finalSalary }}</td>
+                            <td>{{ definedbenifit.yearsOfService }}</td>
+                            <td>{{ definedbenifit.accrualRate }}</td>
+                            <td>{{ definedbenifit.netPensionSalary | number:'1.1-1' }}</td>
+                            <td>{{ definedbenifit.retirementGoalAge }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

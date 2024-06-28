@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Send Message</h3>
+        <form (ngSubmit)="sendMessage()">
+          <div class="form-group">
+            <label for="messageContent">Message:(word limit 50)</label>
+            <textarea class="form-control" id="messageContent" name="messageContent" rows="3" [(ngModel)]="messageContent"  wordLimit="120" required></textarea>
+
+          </div>
+          <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+      </div>
+      <div class="col-md-6"  id="demo">
+        <h3>Previous Conversations</h3>
+        <span>(Messages get automatically deleted from database after 15 min ,download it if you think its important)</span>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let conversation of previousConversations">
+            <strong>Sender:</strong> {{ usersMap.get(conversation.senderId)?.firstName }} |
+            <strong>Receiver:</strong> {{ usersMap.get(conversation.recipientId)?.firstName }} |
+            <strong>Content:</strong> {{ conversation.content }}
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" printSectionId="demo" ngxPrint>Download Previous conversation</button>
+  

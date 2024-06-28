@@ -1,0 +1,128 @@
+<div class="container">
+  <div class="row" *ngIf="!nodata">
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="card-title">Company Type</h5>
+        </div>
+        <div class="card-body">
+          <p>{{ companyName }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="card-title">Total Amount in Pension Pots</h5>
+        </div>
+        <div class="card-body">
+          <p>{{ totalAmount | number:'1.1-1' }}</p>
+        </div>
+      </div>
+      </div>
+    
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Request approval </h5>
+          </div>
+          <div class="card-body" *ngIf="approved">
+            <p>Request Approval has been accepted by company</p>
+          </div>
+          <div class="card-body" *ngIf="!approved">
+            <p>Request Approval has not been accepted by company yet</p>
+          </div>
+        </div>
+      </div>
+   
+  </div>
+  <div class="row" *ngIf="!nodata">
+    <div class="col-md-12" *ngIf="companyName === 'defined_benefit'">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="card-title">Defined Benefit Pension Schemes</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Final Salary</th>
+                <th>Years of Service</th>
+                <th>Accrual Rate</th>
+                <th>Net Pension Salary</th>
+                <th>Retirement Goal Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr >
+                <td>{{ definedbenifit.finalSalary }}</td>
+                <td>{{ definedbenifit.yearsOfService }}</td>
+                <td>{{ definedbenifit.accrualRate }}</td>
+                <td>{{ definedbenifit.netPensionSalary | number:'1.1-1' }}</td>
+                <td>{{ definedbenifit.retirementGoalAge }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12" *ngIf="companyName === 'defined_contribution'">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="card-title">Investments</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Purchase Date</th>
+                <th>Purchase Price</th>
+                <th>Current Price</th>
+                <th>Investment Result</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let investment of investments">
+                <td>{{ investment.name }}</td>
+                <td>{{ investment.symbol }}</td>
+                <td>{{ investment.purchaseDate | date:'medium' }}</td>
+                <td>{{ investment.purchasePrice }}</td>
+                <td>{{ investment.currentPrice }}</td>
+                <td> {{ investment.investmentStatus }} </td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="row">
+    <div class="button-container">
+      <button (click)="navigateToMessagePage()">Message this user</button>
+      </div>
+
+  </div>
+  <div class="row" *ngIf="nodata">
+    <div class="col-md-12">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="card-title">Information</h5>
+        </div>
+        <div class="card-body">
+          <p>The user has not entered their job yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

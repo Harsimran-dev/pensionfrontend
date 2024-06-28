@@ -1,0 +1,289 @@
+<div class="card-body border-top">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <button ngbNavLink>Stocks</button>
+      <ng-template ngbNavContent>
+        <div class="row">
+          <div *ngIf="stockPriceResponse">
+            <p>Stock Price: {{ stockPriceResponse.price }}</p>
+            <p>Name: {{ stockPriceResponse.name }}</p>
+            <p>Exchange: {{ stockPriceResponse.exchange }}</p>
+
+          </div>
+
+
+          <div class="form-group">
+            <span>Minimum 100 pounds should be in pension pot to invest</span><br>
+            <ngb-alert *ngIf="apisuccessful" type="info" [dismissible]="true" (closed)="apisuccessful = false">
+            Successfully Purchased
+            </ngb-alert>
+            <label for="companySelect">Select Company:</label>
+            <select id="companySelect" class="form-control" [(ngModel)]="selectedCompany"
+              (change)="onCompanySelect($event.target.value)">
+              <option value="" disabled>Select a company</option>
+              <option *ngFor="let company of companies" [value]="company.ticker">{{ company.name }}</option>
+            </select>
+            <small class="form-text text-muted" *ngIf="selectedCompany">Selected Company Ticker: {{ selectedCompany
+              }}</small>
+          </div>
+          <div *ngIf="stockPriceResponse">
+            <p>Stock Price: {{ stockPriceResponse.price }}</p>
+            <button (click)="viewPastPerformance()">See past performance</button>
+          </div>
+          <div class="col-lg-12">
+            <div>
+              <div class="d-flex flex-column w-100">
+                <apx-chart [series]="performanceChartOptions?.series" [chart]="performanceChartOptions?.chart"
+                  [plotOptions]="performanceChartOptions?.plotOptions" [xaxis]="performanceChartOptions?.xaxis"
+                  [yaxis]="performanceChartOptions?.yaxis" [grid]="performanceChartOptions?.grid"
+                  [stroke]="performanceChartOptions?.stroke" [tooltip]="performanceChartOptions?.tooltip"
+                  [dataLabels]="performanceChartOptions?.dataLabels" [legend]="performanceChartOptions?.legend"
+                  [colors]="performanceChartOptions?.colors" [markers]="performanceChartOptions?.markers">
+                </apx-chart>
+
+              </div>
+            </div>
+            <div class="card" *ngIf="maxChanges.length > 0">
+              <div class="card-body">
+                <h4 class="card-title">Top Losses and Gains</h4>
+                <div class="table-responsive">
+                  <table class="table align-middle">
+                    <thead>
+                      <tr>
+                        <th class="text-dark font-medium fs-4">Date</th>
+                        <th class="text-dark font-medium fs-4">Change</th>
+                        <th class="text-dark font-medium fs-4">Change Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let change of maxChanges">
+                        <td>{{ change.date }}</td>
+                        <td>{{ change.change }}</td>
+                        <td>{{ change.changeAmount }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+       
+          </div>
+        </div>
+
+         <div *ngIf="stockPriceResponse && selectedCompany"  >
+        <p>You are investing in {{this.selectedCompany}}</p>
+        <p>The stock price of this company is {{this.stockPriceResponse.price}}</p>
+      </div>
+
+      <ngb-alert *ngIf="calculateAlertVisible" type="info" [dismissible]="true" (closed)="calculateAlertVisible = false">
+        {{this.calculatenum}}
+      </ngb-alert>
+      <ngb-alert *ngIf="pensionpotbalance" type="info" [dismissible]="true" (closed)="pensionpotbalance = false">
+        {{this.balance}}
+      </ngb-alert>
+
+        <form [formGroup]="formGroup" *ngIf="showform">
+
+      
+      
+
+
+
+          <div class="form-group">
+            <label for="numberOfStocks">Number of Stocks to Buy:</label>
+            <input type="number" id="numberOfStocks" class="form-control" formControlName="numberOfStocks">
+            <div *ngIf="formGroup.get('numberOfStocks')?.invalid && formGroup.get('numberOfStocks')?.touched"
+              class="text-danger">
+              Number of stocks is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pensionPotSelect">Select Pension Pot:</label>
+            <select id="pensionPotSelect" class="form-control" formControlName="selectedPensionPot">
+              <option *ngFor="let pot of pensionPotsWithMoreThan100Pounds" [value]="pot.id">{{ pot.name }}</option>
+            </select>
+            <div *ngIf="formGroup.get('selectedPensionPot')?.invalid && formGroup.get('selectedPensionPot')?.touched"
+              class="text-danger">
+              Pension pot selection is required.
+            </div>
+          </div>
+
+          <button class="btn btn-primary" (click)="confirmPurchase(stocksvalue)">Buy Stocks</button>
+          <button class="btn btn-secondary" [disabled]="!formGroup.get('numberOfStocks')?.value" (click)="calculate(formGroup.get('numberOfStocks')?.value,stocksvalue)">Calculate</button>
+          <button class="btn btn-secondary" [disabled]="!formGroup.get('selectedPensionPot')?.value" (click)="moneyinthispot(formGroup.get('selectedPensionPot')?.value,stocksvalue)">Money in this Pot</button>
+
+        </form>
+
+
+
+      </ng-template>
+
+    </li>
+    <li [ngbNavItem]="2">
+      <button ngbNavLink>Crypto</button>
+      <ng-template ngbNavContent>
+        <div class="row">
+          <div *ngIf="cryptopriceresponse">
+            <p>Exchange Rate: {{ cryptopriceresponse['Realtime Currency Exchange Rate']['5. Exchange Rate'] }}</p>
+         
+         
+
+          </div>
+
+
+          <div class="form-group">
+            <span>Minimum 100 pounds should be in pension pot to invest</span><br>
+            <ngb-alert *ngIf="apicryptosuccessful" type="info" [dismissible]="true" (closed)="apicryptosuccessful = false">
+              Successfully Purchased
+              </ngb-alert>
+            <label for="companySelect">Select Crypto:</label>
+            <select id="companySelect" class="form-control" [(ngModel)]="selectedCrypto"
+              (change)="onCryptoSelect($event.target.value)">
+              <option value="" disabled>Select a Crypto</option>
+              <option *ngFor="let cryptos of crypto" [value]="cryptos.ticker">{{ cryptos.name }}</option>
+            </select>
+            <small class="form-text text-muted" *ngIf="selectedCrypto">Selected crypto Ticker: {{ selectedCrypto
+              }}</small>
+          </div>
+          <div *ngIf="cryptopriceresponse">
+            <p> Price:{{ cryptopriceresponse['Realtime Currency Exchange Rate']['5. Exchange Rate'] }}</p>
+            <button (click)="viewPastCrptoPerformance()">See past performance</button>
+          </div>
+          <div class="col-lg-12">
+            <div>
+              <div class="d-flex flex-column w-100">
+                <apx-chart [series]="performanceCryptoChartOptions?.series" [chart]="performanceCryptoChartOptions?.chart"
+                [plotOptions]="performanceCryptoChartOptions?.plotOptions" [xaxis]="performanceCryptoChartOptions?.xaxis"
+                [yaxis]="performanceCryptoChartOptions?.yaxis" [grid]="performanceCryptoChartOptions?.grid"
+                [stroke]="performanceCryptoChartOptions?.stroke" [tooltip]="performanceCryptoChartOptions?.tooltip"
+                [dataLabels]="performanceCryptoChartOptions?.dataLabels" [legend]="performanceCryptoChartOptions?.legend"
+                [colors]="performanceCryptoChartOptions?.colors" [markers]="performanceCryptoChartOptions?.markers">
+              </apx-chart>
+
+
+              </div>
+            </div>
+            <div class="card" *ngIf="crymaxChanges.length > 0">
+              <div class="card-body">
+                <h4 class="card-title">Top Losses and Gains</h4>
+                <div class="table-responsive">
+                  <table class="table align-middle">
+                    <thead>
+                      <tr>
+                        <th class="text-dark font-medium fs-4">Date</th>
+                        <th class="text-dark font-medium fs-4">Change</th>
+                        <th class="text-dark font-medium fs-4">Change Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let change of crymaxChanges">
+                        <td>{{ change.date }}</td>
+                        <td>{{ change.change }}</td>
+                        <td>{{ change.changeAmount }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+       
+          </div>
+        </div>
+
+         <div *ngIf="cryptopriceresponse && selectedCrypto"  >
+        <p>You are investing in {{this.selectedCrypto}}</p>
+        <p>The stock price of this company is {{ cryptopriceresponse['Realtime Currency Exchange Rate']['5. Exchange Rate'] }}</p>
+      </div>
+
+      <ngb-alert *ngIf="calculateAlertcryptoVisible" type="info" [dismissible]="true" (closed)="calculateAlertcryptoVisible = false">
+        {{this.calculatecrypto}}
+      </ngb-alert>
+      <ngb-alert *ngIf="pensionpotcryptobalance" type="info" [dismissible]="true" (closed)="pensionpotcryptobalance = false">
+        {{this.balance}}
+      </ngb-alert>
+
+
+        <form [formGroup]="formCryptoGroup" *ngIf="showcryptoform">
+
+      
+      
+
+
+
+          <div class="form-group">
+            <label for="numberOfStocks">Number of Crypto to Buy:</label>
+            <input type="number" id="numberOfCrypto" class="form-control" formControlName="numberOfCrypto">
+            <div *ngIf="formCryptoGroup.get('numberOfCrypto')?.invalid && formCryptoGroup.get('numberOfCrypto')?.touched"
+              class="text-danger">
+              Number of stocks is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pensionPotSelect">Select Pension Pot:</label>
+            <select id="pensionPotSelect" class="form-control" formControlName="selectedPensionPott">
+              <option *ngFor="let pot of pensionPotsWithMoreThan100Pounds" [value]="pot.id">{{ pot.id }}</option>
+            </select>
+            <div *ngIf="formCryptoGroup.get('selectedPensionPott')?.invalid && formCryptoGroup.get('selectedPensionPott')?.touched"
+              class="text-danger">
+              Pension pot selection is required.
+            </div>
+          </div>
+
+          <button class="btn btn-primary" (click)="confirmcryptoPurchase(cryptovalue)">Buy Crypto</button>
+          <button class="btn btn-secondary" [disabled]="!formCryptoGroup.get('numberOfCrypto')?.value" (click)="calculate(formCryptoGroup .get('numberOfCrypto')?.value,cryptovalue)">Calculate</button>
+          <button class="btn btn-secondary" [disabled]="!formCryptoGroup.get('selectedPensionPott')?.value" (click)="moneyinthispot(formCryptoGroup.get('selectedPensionPott')?.value,cryptovalue)">Money in this Pot</button>
+        </form>
+
+      </ng-template>
+    </li>
+
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+</div>

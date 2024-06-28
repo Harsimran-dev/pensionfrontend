@@ -1,0 +1,30 @@
+<div *ngIf="approved; else notApprovedMessage">
+    <div class="contribution-form">
+      <h2>Contribution Details</h2>
+      <ngb-alert *ngIf="userApiSuccess" type="success" (close)="userApiSuccess = false">Contribution submitted successfully!</ngb-alert>
+      <ngb-alert *ngIf="userApibool" type="danger" (close)="userApiError = ''">{{ userApiError }}</ngb-alert>
+      <ngb-alert *ngIf="invalidApiSuccess" type="danger" (close)="userApiError = ''">{{ invalidApiError }}</ngb-alert>
+      <ngb-alert *ngIf="userupdateApiSuccess" type="success" (close)="userupdateApiSuccess = false">Contribution updated successfully!</ngb-alert>
+      
+      <form [formGroup]="contributionForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="percentage">Percentage:</label>
+          <input type="number" id="percentage" name="percentage" class="form-control" formControlName="percentage" required>
+        </div>
+
+       
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  <ng-template #notApprovedMessage>
+    <div class="not-approved-message">
+      <p>Request Yet Not Approved By Company</p>
+      <img
+      src="assets/images/request.png"
+      alt="homepage"
+      class="dark-logo"
+    />
+    </div>
+  </ng-template>
+  

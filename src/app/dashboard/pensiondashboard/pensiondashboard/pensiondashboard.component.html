@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-md-6 col-lg-3" *ngFor="let pot of pensionPots; let v = index">
+        <div class="card" [style.background-color]="v % 2 === 0 ? 'lightblue' : 'lightgreen'">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="btn btn-lg rounded-circle round round-lg fs-6 d-flex align-items-center justify-content-center bg-light-info text-info">
+                        <i class="bi bi-wallet"></i>
+                    </div>
+                    <div class="ms-3">
+                        <h3 class="mb-0 font-weight-bold">Pension Pot</h3>
+                        <p>Total Amount: {{ pot.totalAmount | number:'1.1-1' }}</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

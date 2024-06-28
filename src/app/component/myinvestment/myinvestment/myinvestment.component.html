@@ -1,0 +1,39 @@
+
+
+<h2>Your Investments</h2>
+<ngb-alert *ngIf="transfer" type="info" [dismissible]="true" (closed)="transfer = false">
+  Successfully Transfered
+  </ngb-alert>
+<div id="accordion">
+    <div class="card" *ngFor="let investment of investments">
+      <a class="card-header" role="button" data-toggle="collapse" (click)="toggleCollapse(investment.id,investment.symbol,investment.investmentType )" [attr.data-target]="'#collapse_' + investment.id" aria-expanded="false" aria-controls="collapseOne">
+        <div class="card-header-content">
+          <h5 class="mb-0">
+            Investment Name: {{ investment.name }} {{investment.symbol}} {{investment.investmentType}}  ({{ investment.purchaseDate | date:'medium' }})
+          </h5>
+        </div>
+      </a>
+  
+      <div [id]="'collapse_' + investment.id" class="collapse" [class.show]="investment.id === activeId" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          <p><strong>Investment Type:</strong> {{ investment.investmentType }}</p>
+          <p><strong>Symbol:</strong> {{ investment.symbol }}</p>
+          <p><strong>Name:</strong> {{ investment.name }}</p>
+          <p><strong>Quantity:</strong> {{ investment.quantity }}</p>
+          <p><strong>Purchase Price:</strong> {{ investment.purchasePrice }}</p>
+          <p><strong>Purchase Date:</strong> {{ investment.purchaseDate | date:'long' }}</p>
+          <p><strong>Current Price:</strong> {{ investment.currentPrice }}</p>
+          <p><strong>Investment Result:</strong> {{ investment.investmentStatus }}</p>
+          <!-- Add the button if there is a profit -->
+          <button *ngIf="investment.investmentStatus === 'PROFIT' || investment.investmentStatus === 'NO_PROFIT_NO_LOSS'" class="btn btn-primary" (click)="transferProfitToPot(investment.id, investment.currentPrice, investment.quantity, investment.pensionPot.id)" >Transfer full Profit to Pot and close investment</button>
+
+      </div>
+      
+      </div>
+    </div>
+    <ngx-loading
+    [show]="loading"
+    [config]="{ backdropBorderRadius: '3px' }"
+
+  ></ngx-loading>
+</div>

@@ -1,0 +1,59 @@
+<form [formGroup]="definedBenefitForm" (ngSubmit)="onSubmit()">
+  
+    <ngb-alert *ngIf="personaldetails" type="danger" [dismissible]="true" (closed)="personaldetails = false">
+       Please fill personal details form
+      </ngb-alert>
+      <ngb-alert *ngIf="apisuccess" type="success" [dismissible]="true" (closed)="apisuccess = false">
+     Successfully added Age
+       </ngb-alert>
+       <ngb-alert *ngIf="apiupdate" type="success" [dismissible]="true" (closed)="apiupdate = false">
+      Update Success
+       </ngb-alert>
+       <ngb-alert *ngIf="ageearly" type="danger" [dismissible]="true" (closed)="ageearly = false">
+       Please Enter suitable retirement age
+         </ngb-alert>
+       
+     
+     
+    
+    
+    <div class="form-group">
+      <label for="retirementGoalAge">Retirement Goal Age:</label>
+      <input type="number" class="form-control" id="retirementGoalAge" formControlName="retirementGoalAge">
+    </div>
+  
+  
+  
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+
+  <div class="card custom-card">
+    <div class="card-body">
+        <h4 class="card-title">Defined Benefit Pension Schemes</h4>
+        <h5 class="card-subtitle text-muted">Track Your Pension Schemes</h5>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Final Salary</th>
+                        <th>Years of Service</th>
+                        <th>Accrual Rate</th>
+                        <th>Net Pension Salary</th>
+                        <th>Retirement Goal Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>{{ definedbenifit.finalSalary }}</td>
+                        <td>{{ definedbenifit.yearsOfService }}</td>
+                        <td>{{ definedbenifit.accrualRate }}</td>
+                        <td>{{ definedbenifit.netPensionSalary | number:'1.1-1' }}</td>
+                        <td>{{ definedbenifit.retirementGoalAge }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+  

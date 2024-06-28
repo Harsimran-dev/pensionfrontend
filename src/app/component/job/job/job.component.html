@@ -1,0 +1,53 @@
+<form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+
+    <h1 class="head">Job Details Form</h1>
+    <ngb-alert *ngIf="userApiSuccess" type="success" [dismissible]="true" (closed)="userApiSuccess = false">
+      Job submitted successfully!
+    </ngb-alert>
+    <ngb-alert *ngIf="userApibool" type="danger" [dismissible]="true" (closed)="userApibool = false">
+      {{ userApiError }}
+    </ngb-alert>
+    <ngb-alert *ngIf="invalidApiSuccess" type="danger" [dismissible]="true" (closed)="invalidApiSuccess = false">
+      {{ invalidApiError }}
+    </ngb-alert>
+    <ngb-alert *ngIf="userupdateApiSuccess" type="success" [dismissible]="true" (closed)="userupdateApiSuccess = false">
+      Updated successfully
+    </ngb-alert>
+  
+ 
+
+ 
+  
+  
+    <div class="form-group">
+      <label for="employeeId">Employee ID</label>
+      <input type="text" class="form-control" id="employeeId" formControlName="employeeId">
+    </div>
+    
+    <div class="form-group">
+      <label for="salary">Salary(Annual)</label>
+      <input type="number" class="form-control" id="salary" formControlName="salary"  placeholder="Minimum 5000">
+    </div>
+  
+    <div class="form-group">
+      <label for="jobStarted">Job Started</label>
+      <input type="date" class="form-control" id="jobStarted" formControlName="jobStarted">
+    </div>
+  
+
+  
+    <div class="form-group">
+      <label for="jobTitle">Job Title</label>
+      <input type="text" class="form-control" id="jobTitle" formControlName="jobTitle">
+    </div>
+  
+    <div class="form-group">
+      <label for="companyId">Company</label>
+      <select class="form-control" id="companyId" formControlName="companyId" (change)="onCompanyChange($event.target.value)">
+        <option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</option>
+      </select>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  

@@ -1,0 +1,49 @@
+<div class="container">
+    <h2>Welcome {{ name }}</h2>
+    <div class="row">
+        <div class="box-container">
+            <ng-container *ngFor="let card of cards; let i = index">
+              <div class="box" *ngIf="i !== 0">
+                <div class="arrow"></div>
+              </div>
+              <div class="box" (click)="toggleFlip(i)" [class.flipped]="card.state === 'flipped'">
+                <div class="front">
+                  <p>{{ card.frontContent }}</p>
+                </div>
+                <div class="back">
+                  <p>{{ card.backContent }}</p>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          
+    <div class="row" style="margin-top: 4rem;">
+        <div class="col-lg-6">
+            <div class="card">
+                <img class="card-img-top img-responsive" src="assets/defined_contribution.jpg" alt="Defined Contribution Image" style="width: 70%; height: 200px;">
+                <div class="card-body">
+                    <h4 class="card-title">Defined Contribution Plan</h4>
+                    <p class="card-text">A defined contribution plan allows you to contribute a portion of your salary into an investment account. You can choose from various investment options such as stocks, crypto, and commodities. The value of your retirement savings depends on how much you contribute and the performance of your chosen investments.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <img class="card-img-top img-responsive" src="assets/defined_benefit.jpg" alt="Defined Benefit Image" style="width: 70%; height: 200px;">
+                <div class="card-body">
+                    <h4 class="card-title">Defined Benefit Plan</h4>
+                    <p class="card-text">A defined benefit plan provides you with a guaranteed income in retirement based on factors such as your salary and years of service. Your employer typically manages this plan and bears the investment risk. Unlike defined contribution plans, you don't have control over investment choices. Instead, you receive a set amount each month in retirement.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <img class="card-img-top img-responsive" src="assets/pension.png" alt="Defined Benefit Image" style="width: 70%; height: 200px;">
+                <div class="card-body">
+                    <h4 class="card-title">Details</h4>
+                    <p class="card-text">.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

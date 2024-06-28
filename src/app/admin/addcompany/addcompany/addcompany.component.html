@@ -1,0 +1,26 @@
+
+<ngb-alert *ngIf="successAlertVisible" type="success" (closed)="successAlertVisible = false" [dismissible]="true"
+class="bg-transparent border-success border text-success d-flex align-items-center fs-5">
+company created
+</ngb-alert>
+<ngb-alert *ngIf="errorAlertVisible" type="danger" [dismissible]="true" (closed)="errorAlertVisible = false">
+  {{ errorMessage }}
+</ngb-alert>
+<div>
+    <h2>Add Company</h2>
+    <form (submit)="submitForm()">
+      <div>
+        <label for="name">Company Name:</label>
+        <input type="text" id="name" name="name" [(ngModel)]="company.name" required>
+      </div>
+      <div>
+        <label for="type">Company Type:</label>
+        <select id="type" name="type" [(ngModel)]="company.type" required>
+          <option value="defined_benefit">Defined Benefit</option>
+          <option value="defined_contribution">Defined Contribution</option>
+        </select>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  

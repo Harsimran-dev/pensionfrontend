@@ -1,0 +1,19 @@
+<div *ngIf="hasContributions">
+  <app-pensiondashboard></app-pensiondashboard>
+  <div class="row">
+    <div class="col-lg-12">
+      <app-investmentdashboard></app-investmentdashboard>
+    </div>
+  
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <app-contributiondashboard></app-contributiondashboard>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!hasContributions" id="noContributions">
+  <app-nocontribution></app-nocontribution>
+</div>

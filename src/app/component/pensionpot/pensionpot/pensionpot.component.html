@@ -1,0 +1,113 @@
+
+
+
+<div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">Your Pension Pots</h2>
+    </div>
+  </div>
+  <ngb-alert *ngIf="deleteApiSuccess ==true" type="danger" (close)="deleteApiSuccess = false">{{ userApiError }}</ngb-alert>
+  <ngb-alert *ngIf="deleteapifalse ==true" type="success" (close)="deleteapifalse = false">Deleted Successfully</ngb-alert>
+  <div class="row" style="margin-bottom: 10px;">
+    <span>Avoid creating two pension pot with same name</span>
+    <div class="col-12" *ngIf="hasContributions">
+        <input type="text" class="form-control custom-input" placeholder="Enter Unique pension pot name" [(ngModel)]="pensionPotName" maxlength="50">
+        <button class="btn btn-success" (click)="createPensionPot()" style="margin-top: 10px;">Create Pension Pot</button>
+    </div>
+</div>
+
+  
+  <div class="row" style="margin-top: 10px;">
+    <div class="col-lg-3 col-md-6" *ngFor="let pot of pensionPots ">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <h4 class="card-title text-white">Name: {{ pot.name }}</h4>
+          <h4 class="card-title text-white">Total Amount: {{ pot.totalAmount | number:'1.1-1' }}</h4>
+          <p class="card-text">
+            Creation Date: {{ pot.creationDate | date:'yyyy-MM-dd' }}
+
+          </p>
+          <button class="btn btn-primary btn-danger" style="margin-right: 10px;" (click)="open(content,pot)">Transfer Money</button>
+          <button class="btn btn-primary btn-danger" (click)="open(delete,pot)">Delete</button>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+ 
+  <ng-template #content let-modal>
+  
+      <ngb-alert *ngIf="userApibool ==true" type="danger" (close)="userApibool = false">{{ userApiError }}</ngb-alert>
+
+  
+      
+
+    <div class="modal-body">
+  
+      
+      <div class="form-group">
+        <label for="totalAmount">Transfer From:</label>
+        <input [(ngModel)]="selectedPot.name"  id="totalAmount" name="totalAmount" class="form-control" readonly>
+      </div>
+      <div class="form-group">
+        <label for="receiverPotId">Transfer To:</label>
+        <select [(ngModel)]="receiverPotId" id="receiverPotId" name="receiverPotId" class="form-control">
+          <option *ngFor="let pot of pensionPots" [value]="pot.id" [disabled]="pot.id === selectedPot.id">{{ pot.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="amount">Enter Amount to Transfer:</label>
+        <input [(ngModel)]="amount" type="number" id="amount" name="amount" placeholder="Enter amount" class="form-control">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="transferFunds(selectedPot.id, receiverPotId, amount)">Transfer Funds</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #delete let-modal>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this pension pot?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="deletePensionPot(selectedPot)">Yes, Delete</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cancel click')">Cancel</button>
+    </div>
+  </ng-template>
+
+
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">Fund Transfer History</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Money was trasnfered from</th>
+            <th scope="col">Money was trasnfered to</th>
+            <th scope="col">Amount Transferred</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transfer of fundTransferHistory">
+            <td>{{ transfer.fromAccount }}</td>
+            <td>{{ transfer.toAccount }}</td>
+            <td>{{ transfer.amount }}</td>
+            <td>{{ transfer.creationDate | date: 'yyyy-MM-dd' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
